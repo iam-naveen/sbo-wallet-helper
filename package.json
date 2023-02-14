@@ -2,8 +2,8 @@
   "private": true,
   "scripts": {
     "dev": "npm install && next dev",
-    "build": "npm install && next build",
-    "start": "npm install && next start"
+    "build": "npm install --production && next build",
+    "start": "npm install --production && next start"
   },
   "dependencies": {
     "next": "latest",
