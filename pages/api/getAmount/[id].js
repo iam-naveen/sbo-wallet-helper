@@ -1,49 +1,50 @@
-const webdriver = require("selenium-webdriver");
-const chrome = require("selenium-webdriver/chrome");
-const Key = webdriver.Key;
-const By = webdriver.By;
-const until = webdriver.until;
+import puppeteer from "puppeteer";
 
-export default async function handler(req, res) {
-  let workingWallet = -1;
-  let nonWorkingWallet = -1;
-
+export default function handler(req, res) {
   const { query } = req;
+  const { id } = query;
 
-  const driver = await new webdriver.Builder()
-    .forBrowser("chrome")
-    .setChromeOptions(new chrome.Options().addArguments("--headless"))
-    .build();
+  (async () => {
+    return new Promise(async (resolve) => {
+      const browser = await puppeteer.launch();
+      const page = await browser.newPage();
 
-  try {
-    await driver.get("http://www.wallet.sbowork.org.in/index.php");
-    driver.findElement(By.name("profileid")).sendKeys(query.id, Key.RETURN);
+      await page.goto("http://www.wallet.sbowork.org.in/");
 
-    workingWallet = await driver
-      .wait(
-        until.elementLocated(
-          By.xpath('//*[@id="wrapper"]/div/div[2]/ul/li[2]/h3')
-        ),
-        100
-      )
-      .getText();
+      // Type into search box
+      await page
+        .type("#wrapper > div > form > label > input", `${id}`)
+        .then(() => page.keyboard.press("Enter"));
 
-    nonWorkingWallet = await driver
-      .wait(
-        until.elementLocated(
-          By.xpath('//*[@id="wrapper"]/div/div[2]/ul/li[1]/h3')
-        ),
-        100
-      )
-      .getText();
-  } finally {
-    if (workingWallet == -1) workingWallet = "No Data Found";
-    if (nonWorkingWallet == -1) nonWorkingWallet = "No Data Found";
+      // Locate the elements
+      const workingWalletElement =
+        "#wrapper > div > div.walletbox > ul > li:nth-child(2) > h3";
+      const nonWorkingWalletElement =
+        "#wrapper > div > div.walletbox > ul > li:nth-child(1) > h3";
 
-    res.status(200).json({
-      workingWallet: `${workingWallet}`,
-      nonWorkingWallet: `${nonWorkingWallet}`,
+      // Get the content needed
+      const textSelector1 = await page.waitForSelector(workingWalletElement);
+      const workingWallet = await textSelector1.evaluate(
+        (el) => el.textContent
+      );
+
+      const textSelector2 = await page.waitForSelector(nonWorkingWalletElement);
+      const nonWorkingWallet = await textSelector2.evaluate(
+        (el) => el.textContent
+      );
+
+      const response = {
+        workingWallet: `${workingWallet}`,
+        nonWorkingWallet: `${nonWorkingWallet}`,
+      };
+
+      // close the instance
+      browser.close();
+
+      // return the response
+      res.status(200).json(response);
+
+      return resolve();
     });
-  }
-  driver.quit();
+  })();
 }

@@ -1,23 +1,21 @@
 import { useState } from "react";
 
 export default function Member({ name, memberid }) {
-  const [expand, setExpand] = useState(false);
-  const [details, setDetails] = useState({
+  const loading = {
     workingWallet: "Loading...",
     nonWorkingWallet: "Loading...",
-  });
+  };
+
+  const [expand, setExpand] = useState(false);
+  const [details, setDetails] = useState(loading);
 
   const getDetails = async () => {
     setExpand(!expand);
 
-    setDetails({
-      workingWallet: "Loading...",
-      nonWorkingWallet: "Loading...",
-    });
+    setDetails(loading);
 
     if (!expand) {
       const url = `api/getAmount/${memberid}`;
-      // console.log(url);
       const res = await fetch(url);
       const data = await res.json();
       setDetails(data);

@@ -8,9 +8,9 @@ export default function List() {
     const getData = async function () {
       const res = await fetch("api/data");
       const data = await res.json();
-      setDetails(data)
-    }
-    getData()
+      setDetails(data);
+    };
+    getData();
   }, []);
 
   return (
