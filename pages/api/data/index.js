@@ -116,3 +116,9 @@ export default async function handler(req, res) {
   const { query } = req;
   res.status(200).json(details);
 }
+
+// google sheet id
+// 161wliiE_6v0zFpbahrWUkNYtn_FIWJr0_kGXljmeczc
+
+// Sheet link
+// https://docs.google.com/spreadsheets/d/161wliiE_6v0zFpbahrWUkNYtn_FIWJr0_kGXljmeczc/edit?usp=sharing

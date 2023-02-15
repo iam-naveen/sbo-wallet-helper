@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "chrome-aws-lambda": "^6.0.0",
+    "googleapis": "^111.0.0",
     "next": "latest",
     "puppeteer-core": "^6.0.0",
     "react": "18.2.0",

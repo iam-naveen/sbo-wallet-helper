@@ -36,11 +36,11 @@ export default function Member({ name, memberid }) {
         <div>
           <h1 className="text-center ml-2 text-lg mt-2">{memberid}</h1>
           <div className="flex flex-row justify-center item-center">
-            <div className="flex flex-col items-center text-black bg-slate-100 border mx-1 p-5 w-48 rounded">
+            <div className="flex flex-col items-center text-black bg-slate-100 border mx-1 p-5 w-full rounded">
               <h1 className="text-sm text-center text-slate-400">Working</h1>
               <span className="text-lg font-bold">{details.workingWallet}</span>
             </div>
-            <div className="flex flex-col items-center text-black bg-slate-100 border mx-1 p-5 w-48 rounded">
+            <div className="flex flex-col items-center text-black bg-slate-100 border mx-1 p-5 w-full rounded">
               <h1 className="text-sm text-center text-slate-400">
                 Non-Working
               </h1>
