@@ -14,7 +14,7 @@ export default function List() {
   }, []);
 
   return (
-    <div className="mt-6 flex max-w-4xl flex-wrap items-center justify-around">
+    <div className="mt-6 flex flex-col w-80 md:w-96 lg:w-[28rem] items-center justify-around">
       {details.map((member, index) => (
         <Member name={member.name} memberid={member.id} key={index} />
       ))}
